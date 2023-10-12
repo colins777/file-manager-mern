@@ -1,4 +1,4 @@
-const {schema, model} = require('mongoose')
+const {Schema, model, ObjectId} = require('mongoose')
 
 const User = new Schema({
     //id for table mongoose is adding by default, so we need to add id
