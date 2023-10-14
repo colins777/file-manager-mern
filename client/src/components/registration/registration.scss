@@ -1,0 +1,15 @@
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  h2 {
+    text-align: center;
+    padding: 20px;
+  }
+  .input-wrap {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
