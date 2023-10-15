@@ -1,26 +1,35 @@
 import React, {useState} from 'react';
 
-import './registration.scss';
+import './authorization.scss';
 import Input from "../../utils/Input";
-import {registration} from "../../actions/user";
+import {useDispatch} from "react-redux";
+import {login} from "../../actions/user";
+import {loginUser} from "../../redux-toolkit/features/userSlice";
 
-const Registration = () => {
+const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+
+
+    const handleSubmit = () => {
+        //console.log('Login')
+        try {
+            dispatch(loginUser({email, password}));
+        } catch (e) {console.log('Error', e)}
+    };
 
     return (
         <div className="registration-form">
-           <h2>Register</h2>
+           <h2>Login</h2>
             <div className="input-wrap">
                 <Input value={email} setValue={setEmail} type="email" placeholder="Email"/>
                 <Input value={password} setValue={setPassword} type="password" placeholder="Password"/>
                 <button className="button btn btn-primary"
-                    onClick={() => {
-                        registration(email, password)
-                    }}
+                        onClick={() => handleSubmit()}
                 >
-                    Register
+                    Login
                 </button>
             </div>
 
@@ -28,4 +37,4 @@ const Registration = () => {
     );
 };
 
-export default Registration;
+export default Login;
