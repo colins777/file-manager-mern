@@ -15,36 +15,72 @@ export const loginUser = createAsyncThunk(
     async ({email, password}, {rejectWithValue, dispatch}) => {
         try {
             const {data} = await axios.post('http://localhost:5000/api/auth/login',
-                {
-                    email,
-                    password
-                }
-            )
+                {email, password})
 
             if (data.token) {
-                window.localStorage.setItem('token', data.token)
+                localStorage.setItem('token', data.token)
             }
 
             console.log('loginUser Data', data);
 
             return data;
-
-
         } catch (e) {
             alert(e.response.data.message);
         }
     }
 );
 
+//check if user authorized
+export const auth = createAsyncThunk(
+    'user/auth',
+    async () => {
+        try {
+            //we don't need parameters cause we authorize using only token
+            const {data} = await axios.get('http://localhost:5000/api/auth/auth',
+                {headers:{Authorization: `Bearer ${localStorage.getItem('token')}`}});
+
+            if (data.token) {
+                localStorage.setItem('token', data.token)
+            }
+
+            console.log('loginUser Data', data);
+
+            return data;
+        } catch (e) {
+            localStorage.removeItem('token');
+            alert(e.response.data.message);
+        }
+    }
+);
+
+/*
+export const auth =  () => {
+    return async dispatch => {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/auth/auth`,
+                {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
+            )
+           // dispatch(setUser(response.data.user))
+            localStorage.setItem('token', response.data.token)
+        } catch (e) {
+            alert(e.response.data.message)
+            localStorage.removeItem('token')
+        }
+    }
+}
+*/
 
 export const userSlice = createSlice ({
     name: 'user',
     initialState,
     //object that will change the state
     reducers: {
-       /* setLoginUser: (state, action) => {
-            state.user.email = action.email
-        }*/
+       setLogout: (state, action) => {
+           localStorage.removeItem('token');
+
+           state.currentUser = {};
+           state.isAuth = false;
+       }
     },
     //for async
     extraReducers: {
@@ -60,10 +96,10 @@ export const userSlice = createSlice ({
             //action is getting from backend response
             if (action.payload) {
                 state.isAuth = true;
-                state.currentUser.email = action.payload.email;
-                state.currentUser.token = action.payload.token;
+                state.currentUser = action;
             } else {
                 state.isAuth = false;
+                state.currentUser = null;
             }
 
         },
@@ -74,7 +110,21 @@ export const userSlice = createSlice ({
 
             console.log('action rejected', action);
         },
+
+        //
+        [auth.pending] : (state) => {
+            console.log('auth pending', state);
+        },
+        [auth.fulfilled] : (state) => {
+            console.log('auth fulfilled', state);
+            state.isAuth = true;
+        },
+        [auth.rejected] : (state) => {
+            console.log('auth rejected', state);
+            state.isAuth = false;
+        },
     }
 });
 
+export const {setLogout} = userSlice.actions;
 export default userSlice.reducer;

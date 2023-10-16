@@ -3,8 +3,14 @@ import React from 'react';
 import '../../styles/style.bundle.css'
 import './navbar.scss'
 import {NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setLogout} from "../../redux-toolkit/features/userSlice";
 
 const Navbar = () => {
+    const isAuth = useSelector(state => state.user.isAuth);
+    const dispatch = useDispatch();
+
+
     return (
         <div className="navbar app-container container-fluid d-flex align-items-stretch justify-content-between p-4">
             <div className="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
@@ -16,8 +22,14 @@ const Navbar = () => {
                 <div className="header">Files Cloud Store</div>
 
                 <div className="app-navbar flex-shrink-0">
-                    <div className="menu-title-login"><NavLink to="/login">Login</NavLink></div>
-                    <div className="menu-title-register ms-lg-3"><NavLink to="/registration">Register</NavLink></div>
+                    {!isAuth && <div className="menu-title-login"><NavLink to="/login">Login</NavLink></div>}
+                    {!isAuth && <div className="menu-title-register ms-lg-3"><NavLink to="/registration">Register</NavLink></div>}
+
+                    {isAuth && <div className="menu-title-register ms-lg-3"
+                        onClick={() => dispatch(setLogout())}
+                    >
+                        Logout
+                    </div>}
 
                 </div>
 
