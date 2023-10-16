@@ -12,9 +12,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
 
-
-    const handleSubmit = () => {
-        //console.log('Login')
+    const handleLogin = () => {
         try {
             dispatch(loginUser({email, password}));
         } catch (e) {console.log('Error', e)}
@@ -27,7 +25,7 @@ const Login = () => {
                 <Input value={email} setValue={setEmail} type="email" placeholder="Email"/>
                 <Input value={password} setValue={setPassword} type="password" placeholder="Password"/>
                 <button className="button btn btn-primary"
-                        onClick={() => handleSubmit()}
+                        onClick={() => handleLogin()}
                 >
                     Login
                 </button>

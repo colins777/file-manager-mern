@@ -9,16 +9,27 @@ const initialState = {
 };
 
 
+//loginUser - this is an action
 export const loginUser = createAsyncThunk(
-    'auth/loginUser',
-    async ({email, password}) => {
+    'user/loginUser',
+    async ({email, password}, {rejectWithValue, dispatch}) => {
         try {
-           const response = await axios.post('http://localhost:5000/api/auth/login', {
-                email,
-                password
-            });
+            const {data} = await axios.post('http://localhost:5000/api/auth/login',
+                {
+                    email,
+                    password
+                }
+            )
 
-            return response;
+            if (data.token) {
+                window.localStorage.setItem('token', data.token)
+            }
+
+            console.log('loginUser Data', data);
+
+            return data;
+
+
         } catch (e) {
             alert(e.response.data.message);
         }
@@ -31,26 +42,37 @@ export const userSlice = createSlice ({
     initialState,
     //object that will change the state
     reducers: {
-
+       /* setLoginUser: (state, action) => {
+            state.user.email = action.email
+        }*/
     },
     //for async
     extraReducers: {
         [loginUser.pending] : (state) => {
-            state.isLoading = true;
-            state.status = null;
+            state.isAuth = false;
+
+            console.log('action pending', state);
         },
 
-        [loginUser.fulfilled] : (state, action) => {
-            state.isLoading = false;
-            //message - getting from backend
-            state.status = action.payload.message;
-            state.user = action.payload.user;
-            state.token = action.payload.token;
+        [loginUser.fulfilled]: (state, action) => {
+            console.log('action fulfilled', action);
+
+            //action is getting from backend response
+            if (action.payload) {
+                state.isAuth = true;
+                state.currentUser.email = action.payload.email;
+                state.currentUser.token = action.payload.token;
+            } else {
+                state.isAuth = false;
+            }
+
         },
 
         [loginUser.rejected] : (state, action) => {
-            state.status = action.payload.message
+           // state.status = action.payload.message
             state.isLoading = false;
+
+            console.log('action rejected', action);
         },
     }
 });
