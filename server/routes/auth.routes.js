@@ -11,6 +11,8 @@ const jwt = require('jsonwebtoken');
 const {check, validationResult} = require('express-validator');
 
 const {authMiddleware} = require('../middleware/auth.middleware');
+const fileService = require('../services/fileService');
+const File = require('../models/File')
 
 router.post('/registration',
     //this from lib express-validator for validate email
@@ -46,6 +48,9 @@ router.post('/registration',
 
         //save user in DB
         await user.save();
+
+        //after user saved in DB create folder with user id
+        await fileService.createDir(new File({user:user.id, name: ''}));
 
         return res.json({message: 'User was created'})
 
