@@ -34,6 +34,17 @@ class FileController {
         }
     }
 
+    //method to get all user files
+    async getFiles(req, res) {
+        try {
+            const files = await File.find({user: req.user.id, parent: req.query.parent})
+
+            return res.json({files})
+        } catch (e) {
+            return res.status(500).json({message: 'Can not get files'})
+        }
+    }
+
 }
 
 module.exports = new FileController();

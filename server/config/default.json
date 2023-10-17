@@ -2,5 +2,5 @@
   "serverPort" : 5000,
   "dbUrl" : "mongodb+srv://rumyga:lGbtc3nnFoYoAJp6@cluster0.ralxkus.mongodb.net/",
   "secretKey": "secretKeyTest",
-  "filePath": "E:\\Sites_dev\\FILES_CLOUD_SERVICE"
+  "filePath": "E:\\Sites_dev\\cloud-storage.loc\\server\\FILES_CLOUD_SERVICE"
 }
