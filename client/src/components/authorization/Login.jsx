@@ -3,7 +3,6 @@ import React, {useState} from 'react';
 import './authorization.scss';
 import Input from "../../utils/Input";
 import {useDispatch} from "react-redux";
-import {login} from "../../actions/user";
 import {loginUser} from "../../redux-toolkit/features/userSlice";
 
 const Login = () => {

@@ -8,6 +8,7 @@ import {auth} from "../../redux-toolkit/features/userSlice";
 import './app.scss'
 import Login from "../authorization/Login";
 import {useDispatch, useSelector} from "react-redux";
+import Drive from "../drive/Drive";
 
 function App() {
     const isAuth = useSelector(state => state.user.isAuth);
@@ -25,11 +26,17 @@ function App() {
       <BrowserRouter>
           <div className="app">
             <Navbar/>
-              {!isAuth &&
-              <Routes>
-                  <Route path="/registration" element={<Registration/>} />
-                  <Route path="/login" element={<Login/>} />
-              </Routes>
+              {!isAuth ?
+                  //@TODO need redirect to Drive after login
+                  <Routes>
+                      <Route path="/registration" element={<Registration/>}/>
+                      <Route path="/login" element={<Login/>}/>
+                      {/*<Navigate replace to="/login" />*/}
+                  </Routes>
+                  :
+                  <Routes>
+                      <Route path="/" element={<Drive/>}/>
+                  </Routes>
               }
           </div>
       </BrowserRouter>

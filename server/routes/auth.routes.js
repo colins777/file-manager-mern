@@ -108,17 +108,18 @@ router.get('/auth',
     async (req, res) => {
 
 
-     /*   const token = localStorage.getItem('token');
+    //without this block it is not working, need to fix
+        const token = localStorage.getItem('token');
         if (!token) {
             return res.status(401).json({message: 'Auth error'})
         }
         const decoded = jwt.verify(token, config.get('secretKey'))
-        req.user = decoded;*/
+        req.user = decoded;
 
         console.log('req', req.user);
         try {
-           // const user = await User.findOne({_id: req.user.id})
-            const user = await User.findOne({_id: '652c425a091406e5685a5f8d'})
+            const user = await User.findOne({_id: req.user.id})
+           // const user = await User.findOne({_id: '652c425a091406e5685a5f8d'})
 
 
             const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
