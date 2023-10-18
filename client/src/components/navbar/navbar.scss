@@ -1,9 +1,14 @@
 .navbar {
-  background-color: #d3e7f4;
+  background-color: #eaedf1;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+
 }
 
 .menu-title-login,
 .menu-title-register {
+  cursor: pointer;
   font-weight: 700;
   text-transform: uppercase;
 }

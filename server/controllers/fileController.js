@@ -36,10 +36,15 @@ class FileController {
 
     //method to get all user files
     async getFiles(req, res) {
-        try {
-            const files = await File.find({user: req.user.id, parent: req.query.parent})
 
-            return res.json({files})
+        console.log('req backend', req);
+
+        try {
+            //find by user id and parent folder id https://prnt.sc/aIEx537QtO-0
+           const files = await File.find({user: req.user.id, parent: req.query.parent});
+          //  const files = await File.find({user: '652fe669110ed35eea8097b3', parent: '652ede5513ffaf4a79d8b813'});
+
+            return res.json(files)
         } catch (e) {
             return res.status(500).json({message: 'Can not get files'})
         }

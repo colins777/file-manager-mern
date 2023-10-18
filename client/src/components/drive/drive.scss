@@ -1,0 +1,23 @@
+.app-container {
+  .grey-bg {
+    background-color: #0dcaf0;
+  }
+}
+.file-list {
+  width: 100%;
+  .tools-line {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    & > * {
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+    .btn-back {
+      margin-left: auto;
+    }
+  }
+}
