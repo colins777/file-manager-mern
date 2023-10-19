@@ -31,7 +31,7 @@ const File = ({file}) => {
             </div>
 
             <div className="file-date">
-                <span className="text">{file.date}</span>
+                <span className="text">{file.date.slice(0, 10)}</span>
             </div>
 
             <div className="file-size">

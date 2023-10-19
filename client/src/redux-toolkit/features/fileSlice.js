@@ -1,8 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {loginUser} from "./userSlice";
-
-//Slice - частина Redux toolkit яка відповідає за ініціалізацію state in store  і за всі ф-ї, які звязані зі стейтом
 
 const initialState = {
     files: [],
@@ -13,7 +10,8 @@ const initialState = {
 //setFiles
 //setCurrentDir
 
-export const setFiles = createAsyncThunk(
+
+/*export const setFiles = createAsyncThunk(
     'file/files',
     async ({email, password}, {rejectWithValue, dispatch}) => {
         try {
@@ -26,7 +24,7 @@ export const setFiles = createAsyncThunk(
             alert(e.response.data.message);
         }
     }
-);
+);*/
 
 export const setCurrentDir = createAsyncThunk(
     'file/files',
@@ -34,6 +32,8 @@ export const setCurrentDir = createAsyncThunk(
         try {
             const {data} = await axios.post('http://localhost:5000/api/files',
                 {email, password});
+
+               // setFiles(data);
 
 
             return data;
@@ -83,25 +83,12 @@ export const fileSlice = createSlice ({
     initialState,
     //object that will change the state
     reducers: {
-
+        /*setFiles: (state, action) => {
+            state.files = action.payload
+        }*/
     },
     //for async
     extraReducers: {
-
-        [setFiles.pending] : (state) => {
-            console.log('action pending', state);
-        },
-
-        [setFiles.fulfilled]: (state, action) => {
-            console.log('action fulfilled', action);
-            state.files = action.payload;
-
-        },
-
-        [setFiles.rejected] : (state, action) => {
-            console.log('action rejected', action);
-        },
-
         //setCurrentDir
         [setCurrentDir.pending] : (state) => {
             console.log('action pending', state);
