@@ -1,0 +1,24 @@
+.file-list {
+  margin: 20px 0;
+  .row {
+    display: grid;
+    //grid-template-columns: 1fr 4fr repeat(4, 1fr);
+    grid-template-columns: 1fr 4fr repeat(4, 1fr);
+    &.header {
+      font-weight: 600;
+    }
+    .cell {
+      &.name {
+        grid-column-start: 2;
+      }
+      &.date {
+        grid-column-start: 5;
+        justify-self: center;
+      }
+      &.size {
+        grid-column-start: 6;
+        justify-self: center;
+      }
+    }
+  }
+}

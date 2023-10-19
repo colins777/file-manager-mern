@@ -2,6 +2,7 @@ import './drive.scss';
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getFiles} from "../../redux-toolkit/features/fileSlice";
+import FileList from "./fileList/FileList";
 
 const Drive = () => {
     const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const Drive = () => {
 
     return (
         <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4">
-            <div className="file-list">
+            <div className="list-wrapper">
                 <div className="tools-line">
                     <input type="text" data-kt-filemanager-table-filter="search"
                            className="form-control form-control-solid w-250px ps-15"
@@ -78,7 +79,10 @@ const Drive = () => {
                         Back
                     </button>
                 </div>
-            </div>
+
+                <FileList/>
+
+            </div> {/*End list-wrapper*/}
 
         </div>
     );
