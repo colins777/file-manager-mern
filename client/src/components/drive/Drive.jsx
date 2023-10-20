@@ -1,28 +1,27 @@
 import './drive.scss';
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getFiles} from "../../redux-toolkit/features/fileSlice";
+import {createFolder, getFiles} from "../../redux-toolkit/features/fileSlice";
 import FileList from "./fileList/FileList";
 
 const Drive = () => {
     const dispatch = useDispatch();
-    let currentDirId = useSelector(state => state.file.currentDir);
-   // const currentDir = '652ede5513ffaf4a79d8b813';
-        //652fe669110ed35eea8097b3
-  //  const userId = localStorage.getItem('token');
+    const currentDirId = useSelector(state => state.file.currentDir);
+    const userId = localStorage.getItem('token');
     //@TODO need get user id from auth.middleware, but it is not work
-    const userId = '652fe669110ed35eea8097b3';
-
-    if (!currentDirId) {
-        //get from field parent in DB
-        currentDirId = '652ede5513ffaf4a79d8b813';
-    }
-
+   // const userId = '652fe669110ed35eea8097b3';
 
     //if change currentDir will be activated dispatch()
     useEffect(() => {
         dispatch(getFiles({currentDirId, userId}))
-    }, [currentDirId])
+    }, [currentDirId]);
+
+    const folderName = '3_dir';
+//dirId: '6532763a6b9f63cebd451ba9'
+
+    const createFolderHandler = () => {
+        dispatch(createFolder({dirId: currentDirId, name: folderName}));
+    }
 
     return (
         <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4">
@@ -33,7 +32,9 @@ const Drive = () => {
                            placeholder="Search Files &amp; Folders"
                     />
 
-                    <button type="button" className="btn btn-light-primary me-3" id="kt_file_manager_new_folder">
+                    <button type="button" className="btn btn-light-primary me-3" id="kt_file_manager_new_folder"
+                        onClick={() => createFolderHandler() }
+                    >
                         <span className="svg-icon svg-icon-2">
 														<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                              xmlns="http://www.w3.org/2000/svg">

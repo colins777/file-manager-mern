@@ -5,7 +5,7 @@ const config = require('config');
 
 class FileService {
 
-    //file is not physical file but object file
+    //file is not physical file but object file for DB
     createDir(file) {
         //for every user folder will create and will get user id name - ${file.user}
         const filePath = `${config.get('filePath')}\\${file.user}\\${file.path}`;

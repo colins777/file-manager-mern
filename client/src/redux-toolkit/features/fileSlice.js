@@ -54,7 +54,6 @@ export const getFiles = createAsyncThunk(
       //  dirID = '652ede5513ffaf4a79d8b813';
 
         try {
-            //
             const {data} = await axios.get(`http://localhost:5000/api/files?user=${userId}&${currentDirId ? 'parent=' + currentDirId : ''}`,{
           //  const {data} = await axios.get(`http://localhost:5000/api/files?${dirID ? 'parent=' + dirID : ''}`,{
                 //check user using token from localstorage
@@ -67,6 +66,34 @@ export const getFiles = createAsyncThunk(
             } else {
                 console.log('No files');
             }
+
+
+            return data;
+        } catch (e) {
+            alert(e.response.data.message);
+        }
+    }
+);
+
+//action createDir
+export const createFolder = createAsyncThunk(
+    'file/files',
+    async ({dirId, name}) => {
+
+        console.log('data create file dirId: ', dirId);
+        console.log('data create file name: ', name);
+
+        try {
+            //
+            const {data} = await axios.post('http://localhost:5000/api/files', {
+                name,
+                parent: dirId,
+                type: 'dir'
+            }, {
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+            });
+
+            console.log('data create file: ', data)
 
 
             return data;
@@ -118,6 +145,22 @@ export const fileSlice = createSlice ({
         [getFiles.rejected] : (state, action) => {
             console.log('getFiles action rejected: ', action.error.message);
         },
+
+        //async action createDir
+      /*  [createFolder.pending] : (state) => {
+            console.log('createFolder action pending: ', state);
+        },
+
+        [createFolder.fulfilled]: (state, action) => {
+            console.log('createFolder fulfilled action',action )
+            //state.posts.push(action.payload)
+           // state.files.push(action.payload);
+
+        },
+
+        [createFolder.rejected] : (state, action) => {
+            console.log('createDir action rejected: ', action.error.message);
+        },*/
     }
 });
 
