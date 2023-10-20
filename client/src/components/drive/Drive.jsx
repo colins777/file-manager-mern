@@ -16,11 +16,15 @@ const Drive = () => {
         dispatch(getFiles({currentDirId, userId}))
     }, [currentDirId]);
 
-    const folderName = '3_dir';
+    const folderName = '5_dir';
 //dirId: '6532763a6b9f63cebd451ba9'
 
     const createFolderHandler = () => {
-        dispatch(createFolder({dirId: currentDirId, name: folderName}));
+        try {
+            dispatch(createFolder({dirId: currentDirId, name: folderName}));
+        } catch (e) {
+            console.log('Create folder error', e)
+        }
     }
 
     return (
@@ -32,7 +36,7 @@ const Drive = () => {
                            placeholder="Search Files &amp; Folders"
                     />
 
-                    <button type="button" className="btn btn-light-primary me-3" id="kt_file_manager_new_folder"
+                    <button type="button" className="btn btn-light-primary me-3"
                         onClick={() => createFolderHandler() }
                     >
                         <span className="svg-icon svg-icon-2">

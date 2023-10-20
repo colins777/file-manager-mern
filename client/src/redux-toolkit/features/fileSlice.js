@@ -27,7 +27,7 @@ const initialState = {
 );*/
 
 export const setCurrentDir = createAsyncThunk(
-    'file/files',
+    'file/setCurrentDir',
     async ({email, password}, {rejectWithValue, dispatch}) => {
         try {
             const {data} = await axios.post('http://localhost:5000/api/files',
@@ -45,11 +45,11 @@ export const setCurrentDir = createAsyncThunk(
 
 //action getFiles
 export const getFiles = createAsyncThunk(
-    'file/files',
+    'file/getFiles',
     async ({currentDirId, userId}) => {
 
-        console.log('dirID slice', currentDirId);
-        console.log('userId slice', userId);
+       // console.log('dirID slice', currentDirId);
+       // console.log('userId slice', userId);
 
       //  dirID = '652ede5513ffaf4a79d8b813';
 
@@ -77,7 +77,7 @@ export const getFiles = createAsyncThunk(
 
 //action createDir
 export const createFolder = createAsyncThunk(
-    'file/files',
+    'file/createFolder',
     async ({dirId, name}) => {
 
         console.log('data create file dirId: ', dirId);
@@ -147,20 +147,22 @@ export const fileSlice = createSlice ({
         },
 
         //async action createDir
-      /*  [createFolder.pending] : (state) => {
+        [createFolder.pending] : (state) => {
             console.log('createFolder action pending: ', state);
         },
 
         [createFolder.fulfilled]: (state, action) => {
             console.log('createFolder fulfilled action',action )
-            //state.posts.push(action.payload)
-           // state.files.push(action.payload);
+            if (action.payload) {
+                state.files.push(action.payload);
+            }
+
 
         },
 
         [createFolder.rejected] : (state, action) => {
             console.log('createDir action rejected: ', action.error.message);
-        },*/
+        },
     }
 });
 
