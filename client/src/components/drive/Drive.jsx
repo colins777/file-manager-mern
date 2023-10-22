@@ -1,12 +1,15 @@
 import './drive.scss';
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {createFolder, getFiles} from "../../redux-toolkit/features/fileSlice";
+import {createFolder, getFiles, showHideFileModal} from "../../redux-toolkit/features/fileSlice";
 import FileList from "./fileList/FileList";
+import FileModal from "../Modals/FileModal";
 
 const Drive = () => {
     const dispatch = useDispatch();
     const currentDirId = useSelector(state => state.file.currentDir);
+    const fileModalStatus = useSelector(state => state.file.modalDisplay);
+
     const userId = localStorage.getItem('token');
     //@TODO need get user id from auth.middleware, but it is not work
    // const userId = '652fe669110ed35eea8097b3';
@@ -20,11 +23,21 @@ const Drive = () => {
 //dirId: '6532763a6b9f63cebd451ba9'
 
     const createFolderHandler = () => {
-        try {
+
+        let modalShow = fileModalStatus;
+
+        if (!modalShow) {
+            modalShow = true;
+        }
+
+        dispatch(showHideFileModal(modalShow));
+
+        /*try {
             dispatch(createFolder({dirId: currentDirId, name: folderName}));
         } catch (e) {
             console.log('Create folder error', e)
-        }
+        }*/
+
     }
 
     return (
@@ -89,6 +102,7 @@ const Drive = () => {
 
             </div> {/*End list-wrapper*/}
 
+            <FileModal showModal={fileModalStatus} />
         </div>
     );
 };

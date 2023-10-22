@@ -1,30 +1,16 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {userSlice} from "./userSlice";
 
 const initialState = {
     files: [],
     currentDir: null,
+    modalDisplay: false
 };
 
 //actions
 //setFiles
 //setCurrentDir
-
-
-/*export const setFiles = createAsyncThunk(
-    'file/files',
-    async ({email, password}, {rejectWithValue, dispatch}) => {
-        try {
-            const {data} = await axios.post('http://localhost:5000/api/files',
-                {email, password});
-
-
-            return data;
-        } catch (e) {
-            alert(e.response.data.message);
-        }
-    }
-);*/
 
 export const setCurrentDir = createAsyncThunk(
     'file/setCurrentDir',
@@ -110,9 +96,9 @@ export const fileSlice = createSlice ({
     initialState,
     //object that will change the state
     reducers: {
-        /*setFiles: (state, action) => {
-            state.files = action.payload
-        }*/
+        showHideFileModal: (state, action) => {
+            state.modalDisplay = action.payload
+        }
     },
     //for async
     extraReducers: {
@@ -155,6 +141,8 @@ export const fileSlice = createSlice ({
             console.log('createFolder fulfilled action',action )
             if (action.payload) {
                 state.files.push(action.payload);
+                state.modalDisplay = false;
+
             }
 
 
@@ -167,3 +155,5 @@ export const fileSlice = createSlice ({
 });
 
 export default fileSlice.reducer;
+//export not async action
+export const {showHideFileModal} = fileSlice.actions;
