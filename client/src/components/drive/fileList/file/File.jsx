@@ -1,5 +1,7 @@
 import React from 'react';
 import './file.scss'
+import {useDispatch} from "react-redux";
+import {getFiles, setCurrentDir} from "../../../../redux-toolkit/features/fileSlice";
 
 const ImgTable = () => ( <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z" fill="currentColor"></path>\n' +
@@ -14,8 +16,16 @@ const FileIcon = () => (
 );
 
 const File = ({file}) => {
+    const dispatch = useDispatch();
+
+    //console.log('file!!!!!!!!', file);
+    const openFolderHandler = function () {
+        dispatch(setCurrentDir({currentDirId: file._id}))
+        dispatch( getFiles({currentDirId: file._id, userId: file.user}))
+    }
+
     return (
-        <div className="file">
+        <div className="file" onClick={() => openFolderHandler()}>
             <div className="file-image">
                 {
                     file.type === 'dir'

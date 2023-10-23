@@ -8,37 +8,12 @@ const initialState = {
     modalDisplay: false
 };
 
-//actions
+//actions async
 //setFiles
-//setCurrentDir
-
-export const setCurrentDir = createAsyncThunk(
-    'file/setCurrentDir',
-    async ({email, password}, {rejectWithValue, dispatch}) => {
-        try {
-            const {data} = await axios.post('http://localhost:5000/api/files',
-                {email, password});
-
-               // setFiles(data);
-
-
-            return data;
-        } catch (e) {
-            alert(e.response.data.message);
-        }
-    }
-);
-
 //action getFiles
 export const getFiles = createAsyncThunk(
     'file/getFiles',
     async ({currentDirId, userId}) => {
-
-       // console.log('dirID slice', currentDirId);
-       // console.log('userId slice', userId);
-
-      //  dirID = '652ede5513ffaf4a79d8b813';
-
         try {
             const {data} = await axios.get(`http://localhost:5000/api/files?user=${userId}&${currentDirId ? 'parent=' + currentDirId : ''}`,{
           //  const {data} = await axios.get(`http://localhost:5000/api/files?${dirID ? 'parent=' + dirID : ''}`,{
@@ -98,25 +73,13 @@ export const fileSlice = createSlice ({
     reducers: {
         showHideFileModal: (state, action) => {
             state.modalDisplay = action.payload
+        },
+        setCurrentDir: (state, action) => {
+            state.currentDir = action.payload.currentDirId
         }
     },
     //for async
     extraReducers: {
-        //setCurrentDir
-        [setCurrentDir.pending] : (state) => {
-            console.log('action pending', state);
-        },
-
-        [setCurrentDir.fulfilled]: (state, action) => {
-            console.log('action fulfilled', action);
-            state.currentDir = action.payload;
-
-        },
-
-        [setCurrentDir.rejected] : (state, action) => {
-            console.log('action rejected', action);
-        },
-
         //getFiles
         [getFiles.pending] : (state) => {
             console.log('getFiles action pending: ', state);
@@ -144,8 +107,6 @@ export const fileSlice = createSlice ({
                 state.modalDisplay = false;
 
             }
-
-
         },
 
         [createFolder.rejected] : (state, action) => {
@@ -156,4 +117,4 @@ export const fileSlice = createSlice ({
 
 export default fileSlice.reducer;
 //export not async action
-export const {showHideFileModal} = fileSlice.actions;
+export const {showHideFileModal, setCurrentDir} = fileSlice.actions;
