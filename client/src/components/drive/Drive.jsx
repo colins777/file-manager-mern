@@ -1,7 +1,11 @@
 import './drive.scss';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {createFolder, getFiles, showHideFileModal} from "../../redux-toolkit/features/fileSlice";
+import {
+    getFiles,
+    removeFolderFromStack,
+    showHideFileModal
+} from "../../redux-toolkit/features/fileSlice";
 import FileList from "./fileList/FileList";
 import FileModal from "../Modals/FileModal";
 
@@ -9,6 +13,10 @@ const Drive = () => {
     const dispatch = useDispatch();
     const currentDirId = useSelector(state => state.file.currentDir);
     const fileModalStatus = useSelector(state => state.file.modalDisplay);
+    const foldersStack = useSelector(state => state.file.dirStack);
+
+    const [prevFolderId, setPrevFolderId] = useState(null);
+    //const [lastFolder, setLastFolderId] = useState(null);
 
     const userId = localStorage.getItem('token');
     //@TODO need get user id from auth.middleware, but it is not work
@@ -40,6 +48,38 @@ const Drive = () => {
 
     }
 
+    const backClickHandler = function () {
+
+        //last folder ID in stack
+       // const lastFolder = setLastFolderId(foldersStack[foldersStack.length - 1]);
+        const lastFolder = foldersStack[foldersStack.length - 1];
+
+        console.log('lastFolder', lastFolder);
+        console.log('before foldersStack', foldersStack);
+
+        dispatch(removeFolderFromStack({currentDirId: lastFolder}));
+        console.log('after foldersStack', foldersStack);
+
+        if (!lastFolder) {
+          //  console.log('foldersStack.length < 1');
+            dispatch(getFiles({ userId: userId }));
+        } else {
+            //setPrevFolderId(lastFolder);
+            setPrevFolderId(foldersStack[foldersStack.length - 2]);
+          //  dispatch(getFiles({currentDirId: prevFolderId, userId: userId}))
+        }
+    };
+
+    useEffect(() => {
+        if (prevFolderId) {
+            console.log('prevFolderId changed', prevFolderId)
+            dispatch(getFiles({ currentDirId: prevFolderId, userId: userId }));
+        } else {
+            console.log('prevFolderId changed', prevFolderId)
+            dispatch(getFiles({userId: userId }));
+        }
+    }, [prevFolderId]);
+
     return (
         <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4">
             <div className="list-wrapper">
@@ -67,6 +107,7 @@ const Drive = () => {
 													</span>
                        New Folder
                     </button>
+                    
                     <button type="button" className="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#kt_modal_upload">
                         <span className="svg-icon svg-icon-2">
@@ -85,7 +126,9 @@ const Drive = () => {
                        Upload Files
                     </button>
 
-                    <button type="button" className="btn-back btn btn-light-primary me-3">
+                    <button type="button" className="btn-back btn btn-light-primary me-3"
+                        onClick={() => backClickHandler()}
+                    >
                         <span className="svg-icon svg-icon-2 svg-icon-primary mx-1">
 														<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                              xmlns="http://www.w3.org/2000/svg">

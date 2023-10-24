@@ -5,7 +5,9 @@ import {userSlice} from "./userSlice";
 const initialState = {
     files: [],
     currentDir: null,
-    modalDisplay: false
+    modalDisplay: false,
+    //dirStack: ['652fe669110ed35eea8097b3']
+    dirStack: []
 };
 
 //actions async
@@ -76,7 +78,16 @@ export const fileSlice = createSlice ({
         },
         setCurrentDir: (state, action) => {
             state.currentDir = action.payload.currentDirId
+        },
+        addFolderToStack: (state, action) => {
+            console.log('addFolderToStack', action)
+            state.dirStack.push(action.payload.currentDirId);
+        },
+        removeFolderFromStack: (state, action) => {
+            // console.log('addFolderToStack', action)
+            state.dirStack = state.dirStack.filter((dirID) => dirID !== action.payload.currentDirId);
         }
+
     },
     //for async
     extraReducers: {
@@ -86,7 +97,7 @@ export const fileSlice = createSlice ({
         },
 
         [getFiles.fulfilled]: (state, action) => {
-            console.log('getFiles action fulfilled: ', action);
+           // console.log('getFiles action fulfilled: ', action);
             state.files = action.payload;
 
         },
@@ -117,4 +128,4 @@ export const fileSlice = createSlice ({
 
 export default fileSlice.reducer;
 //export not async action
-export const {showHideFileModal, setCurrentDir} = fileSlice.actions;
+export const {showHideFileModal, setCurrentDir, addFolderToStack, removeFolderFromStack} = fileSlice.actions;
