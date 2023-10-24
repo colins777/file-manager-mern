@@ -51,22 +51,17 @@ const Drive = () => {
     const backClickHandler = function () {
 
         //last folder ID in stack
-       // const lastFolder = setLastFolderId(foldersStack[foldersStack.length - 1]);
         const lastFolder = foldersStack[foldersStack.length - 1];
 
-        console.log('lastFolder', lastFolder);
-        console.log('before foldersStack', foldersStack);
-
         dispatch(removeFolderFromStack({currentDirId: lastFolder}));
-        console.log('after foldersStack', foldersStack);
+        //console.log('foldersStack', foldersStack);
 
-        if (!lastFolder) {
-          //  console.log('foldersStack.length < 1');
+       // if (!lastFolder) {
+        if (foldersStack.length < 2) {
+            setPrevFolderId(null);
             dispatch(getFiles({ userId: userId }));
         } else {
-            //setPrevFolderId(lastFolder);
             setPrevFolderId(foldersStack[foldersStack.length - 2]);
-          //  dispatch(getFiles({currentDirId: prevFolderId, userId: userId}))
         }
     };
 
@@ -126,19 +121,23 @@ const Drive = () => {
                        Upload Files
                     </button>
 
-                    <button type="button" className="btn-back btn btn-light-primary me-3"
-                        onClick={() => backClickHandler()}
-                    >
+                    {foldersStack.length > 0
+                        ?
+                        <button type="button" className="btn-back btn btn-light-primary me-3"
+                                onClick={() => backClickHandler()}
+                        >
                         <span className="svg-icon svg-icon-2 svg-icon-primary mx-1">
-														<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg">
-															<path
-                                                                d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z"
-                                                                fill="currentColor"></path>
-														</svg>
-													</span>
-                        Back
-                    </button>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z"
+                                    fill="currentColor"></path>
+                            </svg>
+                        </span>
+                            Back
+                        </button>
+                        : ''
+                    }
                 </div>
 
                 <FileList/>
