@@ -20,13 +20,17 @@ const File = ({file}) => {
 
     //console.log('file!!!!!!!!', file);
     const openFolderHandler = function () {
-        dispatch (addFolderToStack({currentDirId: file._id}));
-        dispatch(setCurrentDir({currentDirId: file._id}))
-        dispatch(getFiles({currentDirId: file._id, userId: file.user}))
+
+        if (file.type === 'dir') {
+            dispatch (addFolderToStack({currentDirId: file._id}));
+            dispatch(setCurrentDir({currentDirId: file._id}));
+            dispatch(getFiles({currentDirId: file._id, userId: file.user}));
+        }
+
     }
 
     return (
-        <div className="file" onClick={file.type === 'dir' ? () => openFolderHandler() : ''}>
+        <div className="file" onClick={() => openFolderHandler(file)}>
             <div className="file-image">
                 {
                     file.type === 'dir'
