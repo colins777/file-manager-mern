@@ -6,7 +6,7 @@ const fileController = require('../controllers/fileController');
 
 //add authMiddleware to recognize user using token
 router.post('', authMiddleware, fileController.createDir);
-
+router.post('/upload', authMiddleware, fileController.uploadFile);
 router.get('', authMiddleware, fileController.getFiles);
 
 
