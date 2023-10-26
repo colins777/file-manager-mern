@@ -109,6 +109,42 @@ export const uploadFile = createAsyncThunk(
     }
 );
 
+//action uploadFile
+export const downloadFile = createAsyncThunk(
+    'file/downloadFile',
+    async ({file}) => {
+        try {
+           // const {data} = await axios.get(`http://localhost:5000/api/files/download?id=${file._id}`,{
+           await axios.get(`http://localhost:5000/api/files/download?id=${file._id}`,{
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+               // dataType: 'blob'
+                responseType: 'blob'
+            }).then((data) => {
+
+             //  console.log('data blob', data);
+               //https://prnt.sc/SpSamiXqc79b
+
+                const downloadUrl = window.URL.createObjectURL(data.data);
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = file.name;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+
+               // return data;
+            })
+
+           // console.log('data blob', data);
+
+            //get binar file url
+
+        } catch (e) {
+           // alert(e.response.data.message);
+        }
+    }
+);
+
 
 
 export const fileSlice = createSlice ({
@@ -180,6 +216,20 @@ export const fileSlice = createSlice ({
 
         [uploadFile.rejected] : (state, action) => {
             console.log('createDir action rejected: ', action.error.message);
+        },
+
+        //async action downloadFile
+        [downloadFile.pending] : (state) => {
+            console.log('downloadFile action pending: ', state);
+        },
+
+        [downloadFile.fulfilled]: (state, action) => {
+            console.log('downloadFile fulfilled action',action );
+
+        },
+
+        [downloadFile.rejected] : (state, action) => {
+            console.log('downloadFile action rejected: ', action.error.message);
         },
 
     }

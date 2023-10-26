@@ -2,21 +2,22 @@
   margin: 20px 0;
   .row {
     display: grid;
-    //grid-template-columns: 1fr 4fr repeat(4, 1fr);
     grid-template-columns: 1fr 4fr repeat(4, 1fr);
+    grid-gap: 10px;
     &.header {
       font-weight: 600;
     }
     .cell {
       &.name {
         grid-column-start: 2;
+        justify-self: center;
       }
       &.date {
-        grid-column-start: 5;
+        grid-column-start: 4;
         justify-self: center;
       }
       &.size {
-        grid-column-start: 6;
+        grid-column-start: 5;
         justify-self: center;
       }
     }

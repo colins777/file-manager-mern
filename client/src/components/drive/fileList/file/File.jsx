@@ -1,7 +1,7 @@
 import React from 'react';
 import './file.scss'
 import {useDispatch} from "react-redux";
-import {addFolderToStack, getFiles, setCurrentDir} from "../../../../redux-toolkit/features/fileSlice";
+import {addFolderToStack, getFiles, setCurrentDir, downloadFile} from "../../../../redux-toolkit/features/fileSlice";
 
 const ImgTable = () => ( <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z" fill="currentColor"></path>\n' +
@@ -29,6 +29,11 @@ const File = ({file}) => {
 
     }
 
+    function downloadClickHandler(e) {
+        e.stopPropagation();
+        dispatch(downloadFile({file}));
+    }
+
     return (
         <div className="file" onClick={() => openFolderHandler(file)}>
             <div className="file-image">
@@ -51,6 +56,18 @@ const File = ({file}) => {
 
             <div className="file-size">
                 <span className="text">{file.size}</span>
+            </div>
+
+            <div className="file-download-btn ">
+                {file.type !== 'dir' && <button className="badge badge-lg badge-primary"
+                onClick={e => downloadClickHandler(e)}
+                >
+                    Download
+                </button>}
+            </div>
+
+            <div className="file-delete-btn ">
+                <div className="download-btn badge badge-lg badge-primary">Delete</div>
             </div>
         </div>
     );

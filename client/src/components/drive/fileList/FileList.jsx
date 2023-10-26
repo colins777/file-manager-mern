@@ -5,9 +5,8 @@ import File from "./file/File";
 
 const FileList = () => {
 
-    console.log('files: ', useSelector(state => state.file.files))
-
-    const files = useSelector(state => state.file.files).map(file => <File key={file.id} file={file} />);
+    //console.log('files: ', useSelector(state => state.file.files))
+    const files = useSelector(state => state.file.files).map(file => <File key={file._id} file={file} />);
 
    /* const files = [{_id: 1, name: 'test', type: 'dir', size: '5Gb', date: '19/10/2023'},
         {_id: 2, name: 'test2', type: 'dir2', size: '6Gb', date: '19/10/2023'}
@@ -32,6 +31,11 @@ const FileList = () => {
                     <span className="cell-content">
                         Size
                     </span>
+                </div>
+
+                <div className="cell delete"></div>
+                <div className="cell download">
+
                 </div>
             </div>
             {files}
