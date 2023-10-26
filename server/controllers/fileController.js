@@ -120,6 +120,24 @@ class FileController {
         }
     }
 
+    async downloadFile(req, res) {
+        try {
+
+            //get file from DB
+            //file _id - get from request
+            //req.user.id - get from token using middleware authorization
+            const file = await File.findOne({_id: req.query.id, user: req.user.id});
+            const path = config.get('filePath') + '\\' + req.user.id + '\\' + file.path + '\\' + file.name;
+
+            if (fs.existsSync(path)) {
+                return res.download(path, file.name);
+            }
+
+        } catch (e) {
+            return res.status(500).json({message: 'Download error'})
+        }
+    }
+
 }
 
 module.exports = new FileController();

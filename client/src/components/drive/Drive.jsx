@@ -18,7 +18,7 @@ const Drive = () => {
     const foldersStack = useSelector(state => state.file.dirStack);
 
     const [prevFolderId, setPrevFolderId] = useState(null);
-    //const [lastFolder, setLastFolderId] = useState(null);
+    const [dragEnter, setDragEnter] = useState(false);
 
     const userId = localStorage.getItem('token');
     //@TODO need get user id from auth.middleware, but it is not work
@@ -85,8 +85,34 @@ const Drive = () => {
         files.forEach(file => dispatch(uploadFile({file, dirId: currentDirId})))
     }
 
-    return (
-        <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4">
+    function dragEnterHandler(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragEnter(true);
+    }
+
+    function dragLeaveHandler(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragEnter(false);
+    }
+
+    function dragHandler(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        //convert object spec to files array with file objects
+        let files = [...e.dataTransfer.files];
+
+        console.log('files drag', files);
+        files.forEach(file => dispatch(uploadFile({file, dirId: currentDirId})));
+
+        setDragEnter(false);
+    }
+
+    return ( !dragEnter ?
+        <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4"
+             onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}
+        >
             <div className="list-wrapper">
                 <div className="tools-line">
                     <input type="text" data-kt-filemanager-table-filter="search"
@@ -161,6 +187,18 @@ const Drive = () => {
 
             <FileModal showModal={fileModalStatus} />
         </div>
+            :
+            <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4">
+                <div className="drag-files"
+                     onDragEnter={dragEnterHandler}
+                     onDragLeave={dragLeaveHandler}
+                     onDragOver={dragEnterHandler}
+                        onDrop={dragHandler}
+                >
+                    <div className="fs-1 fw-bolder text-dark mb-4">No items found.</div>
+                    <div className="fs-6">Start creating new folders or drag a new file here!</div>
+                </div>
+            </div>
     );
 };
 

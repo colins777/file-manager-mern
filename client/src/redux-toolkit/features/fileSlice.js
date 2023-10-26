@@ -85,6 +85,7 @@ export const uploadFile = createAsyncThunk(
                     onUploadProgress: progressEvent => {
 
                         //@TODO fix upload 500 error problem with frontend
+                        //Cannot read properties of undefined (reading 'getResponseHeader')
                         //get file size for counting progress upload
                         /*const totalLength = progressEvent.lengthComputable
                             ? progressEvent.total : progressEvent.target.getResponseHeader('content-length')

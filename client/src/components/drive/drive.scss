@@ -25,3 +25,13 @@
 #upload_file_field {
   display: none;
 }
+
+.drag-files {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 80px);
+  border: 1px dotted #dbd6d6;
+}
