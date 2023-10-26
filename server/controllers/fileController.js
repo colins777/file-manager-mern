@@ -46,11 +46,11 @@ class FileController {
             //find by user id and parent folder id https://prnt.sc/aIEx537QtO-0
             //req.user.id - this is from token in auth.middleware
             //req.query.parent - from request
-            console.log('req.query.user', req.user.id);
-            console.log('req.query.parent', req.query.parent);
+            //console.log('req.query.user', req.user.id);
+           // console.log('req.query.parent', req.query.parent);
 
             const files = await File.find({user: req.user.id, parent: req.query.parent});
-            console.log('files', files);
+           // console.log('files', files);
 
             return res.json(files)
         } catch (e) {
@@ -60,10 +60,15 @@ class FileController {
 
     async uploadFile(req, res) {
         try {
+
             const file = req.files.file;
+            //console.log('req.body', req.body);
+            //console.log('req.query.parent', req.query.parent);
 
             //find root directory of user to upload file
             const parent = await File.findOne({user: req.user.id, _id: req.body.parent});
+
+           // const parent = null;
 
             //find user to check free space on the drive
             const user = await User.findOne({_id: req.user.id});

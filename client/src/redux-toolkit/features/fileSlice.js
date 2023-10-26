@@ -7,7 +7,8 @@ const initialState = {
     currentDir: null,
     modalDisplay: false,
     //dirStack: ['652fe669110ed35eea8097b3']
-    dirStack: []
+    dirStack: [],
+    fileUploaded: false
 };
 
 //actions async
@@ -69,7 +70,7 @@ export const createFolder = createAsyncThunk(
 //action uploadFile
 export const uploadFile = createAsyncThunk(
     'file/uploadFile',
-    async (file, dirId) => {
+    async ({file, dirId}) => {
         try {
 
             const formData = new FormData();
@@ -164,6 +165,22 @@ export const fileSlice = createSlice ({
         [createFolder.rejected] : (state, action) => {
             console.log('createDir action rejected: ', action.error.message);
         },
+
+        //async action uploadFile
+        [uploadFile.pending] : (state) => {
+            console.log('uploadFile action pending: ', state);
+        },
+
+        [uploadFile.fulfilled]: (state, action) => {
+            console.log('uploadFile fulfilled action',action )
+            state.fileUploaded = true;
+          //  state.files = action.payload;
+        },
+
+        [uploadFile.rejected] : (state, action) => {
+            console.log('createDir action rejected: ', action.error.message);
+        },
+
     }
 });
 

@@ -13,6 +13,7 @@ import FileModal from "../Modals/FileModal";
 const Drive = () => {
     const dispatch = useDispatch();
     const currentDirId = useSelector(state => state.file.currentDir);
+    const fileUploaded = useSelector(state => state.file.fileUploaded);
     const fileModalStatus = useSelector(state => state.file.modalDisplay);
     const foldersStack = useSelector(state => state.file.dirStack);
 
@@ -26,7 +27,7 @@ const Drive = () => {
     //if change currentDir will be activated dispatch()
     useEffect(() => {
         dispatch(getFiles({currentDirId, userId}))
-    }, [currentDirId]);
+    }, [currentDirId, fileUploaded]);
 
     const folderName = '5_dir';
 //dirId: '6532763a6b9f63cebd451ba9'
@@ -79,9 +80,9 @@ const Drive = () => {
     const fileUploadHandler = function (event) {
         const files = [...event.target.files];
 
-        console.log('currentDirId', currentDirId);
+        //console.log('files', files);
 
-        files.forEach(file => dispatch(uploadFile(file, currentDirId)))
+        files.forEach(file => dispatch(uploadFile({file, dirId: currentDirId})))
     }
 
     return (
