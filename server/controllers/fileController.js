@@ -158,7 +158,7 @@ class FileController {
                 // await file.remove()
             await file.deleteOne({ _id: file._id });
 
-            return res.json({message: 'File was deleted'})
+            return res.json({message: 'File was deleted', fileID: file._id})
         } catch (e) {
             console.log(e)
             return res.status(400).json({message: 'Delete file error.'})

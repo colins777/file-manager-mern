@@ -259,12 +259,11 @@ export const fileSlice = createSlice ({
 
         //@TODO files deleting not works https://prnt.sc/KL4bVg0qJKP1
         [deleteFile.fulfilled]: (state, action) => {
-            console.log('deleteFile fulfilled action', action.payload);
+           // console.log('deleteFile fulfilled action', action.payload);
 
-
-           /* state.files = state.files.filter(file => {
-                file._id !== action.payload;
-            })*/
+            state.files = state.files.filter(file => {
+              return file._id !== action.payload.fileID;
+            })
         },
 
         [deleteFile.rejected] : (state, action) => {

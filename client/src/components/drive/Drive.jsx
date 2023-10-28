@@ -110,10 +110,10 @@ const Drive = () => {
     }
 
     return ( !dragEnter ?
-        <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4"
-             onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}
-        >
-            <div className="list-wrapper">
+        <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4">
+            <div className="list-wrapper"
+                 onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}
+            >
                 <div className="tools-line">
                     <input type="text" data-kt-filemanager-table-filter="search"
                            className="form-control form-control-solid w-250px ps-15"
