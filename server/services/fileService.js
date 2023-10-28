@@ -28,17 +28,16 @@ class FileService {
 
     //file is a model from DB
     deleteFile(file) {
-        const path = this.getPath(file);
+        const path = this.getPath(file)
         if (file.type === 'dir') {
-            fs.rmdirSync(path);
+            fs.rmdirSync(path)
         } else {
-            fs.unlinkSync(path);
+            fs.unlinkSync(path)
         }
     }
 
-
     getPath(file) {
-        return config.get('filePath') + '\\' + file.user + '\\' + file.path;
+        return config.get('filePath') + '\\' + file.user + '\\' + file.path
     }
 }
 

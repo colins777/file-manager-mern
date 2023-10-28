@@ -146,19 +146,22 @@ class FileController {
         try {
             const file = await File.findOne({_id: req.query.id, user: req.user.id});
 
+            console.log('file server', file);
 
-           if (!file) {
-               return res.status(400).json({message: 'File not found'})
-           }
+            if (!file) {
+                return res.status(400).json({message: 'file not found'})
+            }
 
-           //physical file deleting
-           fileService.deleteFile(file);
-           await file.remove();
+            //physical file deleting
+            fileService.deleteFile(file)
 
-           return res.json({message: 'File was deleted'})
+                // await file.remove()
+            await file.deleteOne({ _id: file._id });
 
+            return res.json({message: 'File was deleted'})
         } catch (e) {
-            return res.status(500).json({message: 'Delete file error'})
+            console.log(e)
+            return res.status(400).json({message: 'Delete file error.'})
         }
     }
 

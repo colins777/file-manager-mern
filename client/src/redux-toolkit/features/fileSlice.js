@@ -145,6 +145,26 @@ export const downloadFile = createAsyncThunk(
     }
 );
 
+//action deleteFile
+export const deleteFile = createAsyncThunk(
+    'file/deleteFile',
+    async (file) => {
+        try {
+
+            console.log('fileID', file._id);
+            //console.log('fileID', file._id);
+
+            const {data} = await axios.delete(`http://localhost:5000/api/files?id=${file._id}`,{
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+            });
+
+            return data;
+        } catch (e) {
+            // alert(e.response.data.message);
+        }
+    }
+);
+
 
 
 export const fileSlice = createSlice ({
@@ -230,6 +250,25 @@ export const fileSlice = createSlice ({
 
         [downloadFile.rejected] : (state, action) => {
             console.log('downloadFile action rejected: ', action.error.message);
+        },
+
+        //async action deleteFile
+        [deleteFile.pending] : (state) => {
+            console.log('deleteFile action pending: ', state);
+        },
+
+        //@TODO files deleting not works https://prnt.sc/KL4bVg0qJKP1
+        [deleteFile.fulfilled]: (state, action) => {
+            console.log('deleteFile fulfilled action', action.payload);
+
+
+           /* state.files = state.files.filter(file => {
+                file._id !== action.payload;
+            })*/
+        },
+
+        [deleteFile.rejected] : (state, action) => {
+            console.log('deleteFile action rejected: ', action.error.message);
         },
 
     }
