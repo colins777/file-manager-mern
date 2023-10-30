@@ -9,6 +9,7 @@ import {
 } from "../../redux-toolkit/features/fileSlice";
 import FileList from "./fileList/FileList";
 import FileModal from "../Modals/FileModal";
+import UploaderWindow from "./uploader/UploaderWindow";
 
 const Drive = () => {
     const dispatch = useDispatch();
@@ -186,6 +187,8 @@ const Drive = () => {
             </div> {/*End list-wrapper*/}
 
             <FileModal showModal={fileModalStatus} />
+
+            <UploaderWindow />
         </div>
             :
             <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4">
