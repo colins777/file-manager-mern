@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {userSlice} from "./userSlice";
 
 const initialState = {
     files: [],
@@ -82,6 +81,7 @@ export const uploadFile = createAsyncThunk(
 
             const {data} = await axios.post('http://localhost:5000/api/files/upload', formData,{
                     headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+
                     onUploadProgress: progressEvent => {
 
                         //@TODO fix upload 500 error problem with frontend
@@ -192,26 +192,27 @@ export const fileSlice = createSlice ({
     extraReducers: {
         //getFiles
         [getFiles.pending] : (state) => {
-            console.log('getFiles action pending: ', state);
+            //console.log('getFiles action pending: ', state);
         },
 
         [getFiles.fulfilled]: (state, action) => {
-           // console.log('getFiles action fulfilled: ', action);
+           // console.log('getFiles action fulfilled: ', action.payload);
+            //action payload is an array with files objects
             state.files = action.payload;
 
         },
 
         [getFiles.rejected] : (state, action) => {
-            console.log('getFiles action rejected: ', action.error.message);
+           // console.log('getFiles action rejected: ', action.error.message);
         },
 
         //async action createDir
         [createFolder.pending] : (state) => {
-            console.log('createFolder action pending: ', state);
+            //console.log('createFolder action pending: ', state);
         },
 
         [createFolder.fulfilled]: (state, action) => {
-            console.log('createFolder fulfilled action',action )
+           // console.log('createFolder fulfilled action',action )
             if (action.payload) {
                 state.files.push(action.payload);
                 state.modalDisplay = false;
@@ -229,7 +230,7 @@ export const fileSlice = createSlice ({
         },
 
         [uploadFile.fulfilled]: (state, action) => {
-            console.log('uploadFile fulfilled action',action )
+            console.log('uploadFile fulfilled action', action.payload)
             state.fileUploaded = true;
           //  state.files = action.payload;
         },
