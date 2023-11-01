@@ -1,13 +1,13 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {addFilesToProgress, changeProgressUploadFile} from './uploadWindowSlice';
 
 const initialState = {
     files: [],
     currentDir: null,
     modalDisplay: false,
-    //dirStack: ['652fe669110ed35eea8097b3']
     dirStack: [],
-    fileUploaded: false
+    fileUploaded: false,
 };
 
 //actions async
@@ -69,7 +69,8 @@ export const createFolder = createAsyncThunk(
 //action uploadFile
 export const uploadFile = createAsyncThunk(
     'file/uploadFile',
-    async ({file, dirId}) => {
+    //first arg - action payload, second dispatch for dispatch some action, but not recomend use dispatch in slice
+    async ({file, dirId}, {dispatch}) => {
         try {
 
             const formData = new FormData();
@@ -79,28 +80,29 @@ export const uploadFile = createAsyncThunk(
                 formData.append('parent', dirId);
             }
 
+           // let fileUpload = {id: Date.now() , name: file.name, progress: 0}
+            const fileId = file.lastModified +  file.name;
+            let fileUpload = {id: fileId, name: file.name, progress: 0};
+
+            dispatch(addFilesToProgress(fileUpload));
+            console.log('fileUpload progress', fileUpload);
+
             const {data} = await axios.post('http://localhost:5000/api/files/upload', formData,{
                     headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
 
-                    onUploadProgress: progressEvent => {
+                onUploadProgress: progressEvent => {
+                    //https://stackoverflow.com/questions/64684110/how-to-get-onuploadprogress-value-in-an-await-function-from-axios
+                    //https://stackoverflow.com/questions/66613260/how-to-dispatch-asyncthunk-inside-another-asyncthunk
 
-                        //@TODO fix upload 500 error problem with frontend
-                        //Cannot read properties of undefined (reading 'getResponseHeader')
-                        //get file size for counting progress upload
-                        /*const totalLength = progressEvent.lengthComputable
-                            ? progressEvent.total : progressEvent.target.getResponseHeader('content-length')
-                            || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+                    let percentComplete = progressEvent.loaded / progressEvent.total
+                    percentComplete = parseInt(percentComplete * 100);
 
-                        console.log('total', totalLength);
-                        if (totalLength) {
-                            let progress = Math.round((progressEvent.loaded * 100) / totalLength)
-                            console.log(progress)
-                        }*/
-                    }
-                });
+                   // console.log('file upload progress', percentComplete);
+                    //console.log('file upload fileUpload', fileUpload);
+                    dispatch(changeProgressUploadFile({id: fileId, progress: percentComplete}))
 
-            console.log('data create file: ', data);
-
+                }
+            });
 
             return data;
         } catch (e) {
@@ -109,7 +111,7 @@ export const uploadFile = createAsyncThunk(
     }
 );
 
-//action uploadFile
+//action downloadFile
 export const downloadFile = createAsyncThunk(
     'file/downloadFile',
     async ({file}) => {
@@ -185,7 +187,7 @@ export const fileSlice = createSlice ({
         removeFolderFromStack: (state, action) => {
             // console.log('addFolderToStack', action)
             state.dirStack = state.dirStack.filter((dirID) => dirID !== action.payload.currentDirId);
-        }
+        },
 
     },
     //for async
@@ -278,4 +280,4 @@ export const fileSlice = createSlice ({
 
 export default fileSlice.reducer;
 //export not async action
-export const {showHideFileModal, setCurrentDir, addFolderToStack, removeFolderFromStack} = fileSlice.actions;
+export const {showHideFileModal, setCurrentDir, addFolderToStack, removeFolderFromStack, setFileUploadProgress} = fileSlice.actions;

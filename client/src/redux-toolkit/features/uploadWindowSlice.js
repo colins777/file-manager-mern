@@ -38,11 +38,20 @@ export const uploadWindowSlice = createSlice ({
             state.isVisible = false;
             state.files = [];
         },
-        addUploadFile: (state, action) => {
-          //  state.files = state.files.push(action.payload);
-            state.files.push(action.payload.fileUpload);
+        addFilesToProgress: (state, action) => {
 
-            console.log('uploadWindow addUploadFile:', action)
+            state.files.push(action.payload);
+
+        },
+        changeProgressUploadFile: (state, action) => {
+
+            state.files = state.files.map(file => file.id === action.payload.id
+               // ? file.progress = action.payload.progress
+                ? {...file, progress: action.payload.progress}
+
+                : {...file}
+            );
+           // console.log('REDUCER uploadWindow addUploadFile:', action)
         },
     },
     //for async
@@ -52,4 +61,4 @@ export const uploadWindowSlice = createSlice ({
 });
 
 export default uploadWindowSlice.reducer;
-export const {showUploader, hideUploader, addUploadFile} = uploadWindowSlice.actions;
+export const {showUploader, hideUploader, changeProgressUploadFile, addFilesToProgress} = uploadWindowSlice.actions;

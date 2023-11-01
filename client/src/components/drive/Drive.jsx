@@ -10,7 +10,7 @@ import {
 import FileList from "./fileList/FileList";
 import FileModal from "../Modals/FileModal";
 import UploaderWindow from "./uploader/UploaderWindow";
-import {addUploadFile, showUploader} from "../../redux-toolkit/features/uploadWindowSlice";
+import {showUploader} from "../../redux-toolkit/features/uploadWindowSlice";
 
 const Drive = () => {
     const dispatch = useDispatch();
@@ -82,13 +82,8 @@ const Drive = () => {
         //files.forEach(file => dispatch(uploadFile({file, dirId: currentDirId})))
 
         files.forEach((file) => {
-
             //Show window with uploaded files
             dispatch(showUploader({file}));
-
-            const fileUpload = {name: file.name, progress: 0};
-            //add uploaded file to store
-            dispatch(addUploadFile({fileUpload}));
 
             //upload file on server
             dispatch(uploadFile({file, dirId: currentDirId}));
@@ -122,10 +117,6 @@ const Drive = () => {
 
             //Show window with uploaded files
             dispatch(showUploader({file}));
-
-             const fileUpload = {name: file.name, progress: 0};
-            //add uploaded file to store
-            dispatch(addUploadFile({fileUpload}));
 
             //upload file on server
             dispatch(uploadFile({file, dirId: currentDirId}));
