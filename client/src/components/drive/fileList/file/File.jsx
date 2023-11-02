@@ -2,6 +2,7 @@ import React from 'react';
 import './file.scss'
 import {useDispatch} from "react-redux";
 import {addFolderToStack, getFiles, setCurrentDir, downloadFile, deleteFile} from "../../../../redux-toolkit/features/fileSlice";
+import sizeFormat from "../../../../helpers/sizeFormat";
 
 const ImgTable = () => ( <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z" fill="currentColor"></path>\n' +
@@ -60,7 +61,7 @@ const File = ({file}) => {
             </div>
 
             <div className="file-size">
-                <span className="text">{file.size}</span>
+                <span className="text">{sizeFormat(file.size)}</span>
             </div>
 
             <div className="file-download-btn ">
