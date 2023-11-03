@@ -40,7 +40,7 @@ const FileList = () => {
                 </div>
             </div>
             <TransitionGroup>
-                {files.map(file =>
+                {files && files.map(file =>
                     <CSSTransition
                         key={file._id}
                         timeout={500}
