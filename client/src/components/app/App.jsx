@@ -16,11 +16,10 @@ function App() {
 
     useEffect(() => {
         //if(isAuth) {
-            dispatch(auth());
+          //  dispatch(auth({login: 'colins', password: 123456}));
+        dispatch(auth());
       //  }
-
-
-    }, [])
+    }, []);
 
   return (
       <BrowserRouter>

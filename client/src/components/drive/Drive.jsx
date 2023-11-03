@@ -23,16 +23,10 @@ const Drive = () => {
     const [dragEnter, setDragEnter] = useState(false);
     const [sort, setSort] = useState('name');
 
-
-
-   // const userId = localStorage.getItem('token');
-    //@TODO need get user id from auth.middleware, but it is not work
-    const userId = '652fe669110ed35eea8097b3';
-
     //if change currentDir will be activated dispatch()
     useEffect(() => {
-      //  dispatch(getFiles({currentDirId, sort}))
-        dispatch(getFiles({currentDirId, userId, sort}))
+        dispatch(getFiles({currentDirId, sort}))
+      //  dispatch(getFiles({currentDirId, userId, sort}))
     }, [currentDirId, fileUploaded, sort]);
 
     //const folderName = '5_dir';
@@ -60,7 +54,8 @@ const Drive = () => {
        // if (!lastFolder) {
         if (foldersStack.length < 2) {
             setPrevFolderId(null);
-            dispatch(getFiles({ userId: userId }));
+          //  dispatch(getFiles({ userId: userId }));
+            dispatch(getFiles());
         } else {
             setPrevFolderId(foldersStack[foldersStack.length - 2]);
         }
@@ -69,10 +64,12 @@ const Drive = () => {
     useEffect(() => {
         if (prevFolderId) {
            // console.log('prevFolderId changed', prevFolderId)
-            dispatch(getFiles({ currentDirId: prevFolderId, userId: userId }));
+         //   dispatch(getFiles({ currentDirId: prevFolderId, userId: userId }));
+            dispatch(getFiles({ currentDirId: prevFolderId}));
         } else {
             //console.log('prevFolderId changed', prevFolderId)
-            dispatch(getFiles({userId: userId }));
+           // dispatch(getFiles({userId: userId }));
+            dispatch(getFiles());
         }
     }, [prevFolderId]);
 

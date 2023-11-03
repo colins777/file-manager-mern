@@ -35,7 +35,7 @@ export const auth = createAsyncThunk(
     'user/auth',
     async () => {
         try {
-            //we don't need parameters cause we authorize using only token
+            //we don't need parameters cause we make authorization using only token
             const {data} = await axios.get('http://localhost:5000/api/auth/auth',
                 {headers:{Authorization: `Bearer ${localStorage.getItem('token')}`}});
 
@@ -67,12 +67,6 @@ export const userSlice = createSlice ({
     },
     //for async
     extraReducers: {
-        [loginUser.pending] : (state) => {
-            state.isAuth = false;
-
-            console.log('action pending', state);
-        },
-
         [loginUser.fulfilled]: (state, action) => {
             console.log('action fulfilled', action);
 
@@ -94,10 +88,6 @@ export const userSlice = createSlice ({
             console.log('action rejected', action);
         },
 
-        //
-        [auth.pending] : (state) => {
-            console.log('auth pending', state);
-        },
         [auth.fulfilled] : (state) => {
             console.log('auth fulfilled', state);
             state.isAuth = true;

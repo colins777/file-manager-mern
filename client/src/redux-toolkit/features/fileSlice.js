@@ -10,8 +10,6 @@ const initialState = {
     fileUploaded: false,
 };
 
-//actions async
-//setFiles
 //action getFiles
 export const getFiles = createAsyncThunk(
     'file/getFiles',
@@ -211,24 +209,14 @@ export const fileSlice = createSlice ({
     //for async
     extraReducers: {
         //getFiles
-        [getFiles.pending] : (state) => {
-            //console.log('getFiles action pending: ', state);
-        },
-
         [getFiles.fulfilled]: (state, action) => {
            // console.log('getFiles action fulfilled: ', action.payload);
             //action payload is an array with files objects
             state.files = action.payload;
-
         },
 
         [getFiles.rejected] : (state, action) => {
            // console.log('getFiles action rejected: ', action.error.message);
-        },
-
-        //async action createDir
-        [createFolder.pending] : (state) => {
-            //console.log('createFolder action pending: ', state);
         },
 
         [createFolder.fulfilled]: (state, action) => {
@@ -245,10 +233,6 @@ export const fileSlice = createSlice ({
         },
 
         //async action uploadFile
-        [uploadFile.pending] : (state) => {
-            console.log('uploadFile action pending: ', state);
-        },
-
         [uploadFile.fulfilled]: (state, action) => {
             console.log('uploadFile fulfilled action', action.payload)
             state.fileUploaded = true;
@@ -260,10 +244,6 @@ export const fileSlice = createSlice ({
         },
 
         //async action downloadFile
-        [downloadFile.pending] : (state) => {
-            console.log('downloadFile action pending: ', state);
-        },
-
         [downloadFile.fulfilled]: (state, action) => {
             console.log('downloadFile fulfilled action',action );
 
@@ -274,10 +254,6 @@ export const fileSlice = createSlice ({
         },
 
         //async action deleteFile
-        [deleteFile.pending] : (state) => {
-            console.log('deleteFile action pending: ', state);
-        },
-
         //@TODO files deleting not works https://prnt.sc/KL4bVg0qJKP1
         [deleteFile.fulfilled]: (state, action) => {
             console.log('deleteFile fulfilled action', action.payload);
