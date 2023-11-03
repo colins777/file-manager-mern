@@ -15,10 +15,28 @@ const initialState = {
 //action getFiles
 export const getFiles = createAsyncThunk(
     'file/getFiles',
-    async ({currentDirId, userId}) => {
+    async ({currentDirId, userId, sort}) => {
         try {
-            const {data} = await axios.get(`http://localhost:5000/api/files?user=${userId}&${currentDirId ? 'parent=' + currentDirId : ''}`,{
-          //  const {data} = await axios.get(`http://localhost:5000/api/files?${dirID ? 'parent=' + dirID : ''}`,{
+
+            let url = `http://localhost:5000/api/files?user=${userId}`;
+
+            if (currentDirId) {
+                url+= `&parent=${currentDirId}`
+            }
+
+            if (sort) {
+                url+= `&sort=${sort}`
+            }
+
+            console.log('URL', url);
+
+
+//            const {data} = await axios.get(`http://localhost:5000/api/files?user=${userId}&${currentDirId ? 'parent=' + currentDirId : ''}`,{
+
+            const {data} = await axios.get(url,{
+
+
+                //  const {data} = await axios.get(`http://localhost:5000/api/files?${dirID ? 'parent=' + dirID : ''}`,{
                 //check user using token from localstorage
                 headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
             });

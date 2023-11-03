@@ -21,18 +21,22 @@ const Drive = () => {
 
     const [prevFolderId, setPrevFolderId] = useState(null);
     const [dragEnter, setDragEnter] = useState(false);
+    const [sort, setSort] = useState('name');
 
-    const userId = localStorage.getItem('token');
+
+
+   // const userId = localStorage.getItem('token');
     //@TODO need get user id from auth.middleware, but it is not work
-   // const userId = '652fe669110ed35eea8097b3';
+    const userId = '652fe669110ed35eea8097b3';
 
     //if change currentDir will be activated dispatch()
     useEffect(() => {
-        dispatch(getFiles({currentDirId, userId}))
-    }, [currentDirId, fileUploaded]);
+      //  dispatch(getFiles({currentDirId, sort}))
+        dispatch(getFiles({currentDirId, userId, sort}))
+    }, [currentDirId, fileUploaded, sort]);
 
-    const folderName = '5_dir';
-//dirId: '6532763a6b9f63cebd451ba9'
+    //const folderName = '5_dir';
+    //dirId: '6532763a6b9f63cebd451ba9'
 
     const createFolderHandler = () => {
 
@@ -136,6 +140,15 @@ const Drive = () => {
                            className="form-control form-control-solid w-250px ps-15"
                            placeholder="Search Files &amp; Folders"
                     />
+
+                    <select value={sort}
+                            className="drive-select"
+                    onChange={(e) => {setSort(e.target.value)}}
+                    >
+                        <option value="name">Sort by name</option>
+                        <option value="type">Sort by type</option>
+                        <option value="date">Sort by date</option>
+                    </select>
 
                     <button type="button" className="btn btn-light-primary me-3"
                         onClick={() => createFolderHandler() }

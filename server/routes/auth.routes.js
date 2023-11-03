@@ -119,10 +119,10 @@ router.get('/auth',
         console.log('req', req.user);
         try {
             //const user = await User.findOne({_id: req.user.id})
+            //@TODO need to fix authorization
             const user = await User.findOne({_id: '652fe669110ed35eea8097b3'});
 
             console.log('user', user);
-
 
             const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
             return res.json({

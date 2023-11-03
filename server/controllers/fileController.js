@@ -47,9 +47,27 @@ class FileController {
             //req.user.id - this is from token in auth.middleware
             //req.query.parent - from request
             //console.log('req.query.user', req.user.id);
-           // console.log('req.query.parent', req.query.parent);
+           // console.log('req.query.parent', greq.query.parent);
 
-            const files = await File.find({user: req.user.id, parent: req.query.parent});
+            const {sort} = req.query;
+
+            let files;
+            switch (sort) {
+                case 'name':
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name:1})
+                    break
+                case 'type':
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type:1})
+                    break
+                case 'date':
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({date:1})
+                    break
+                default:
+                    files = await File.find({user: req.user.id, parent: req.query.parent})
+                    break;
+            }
+
+
            // console.log('files', files);
 
             return res.json(files)
