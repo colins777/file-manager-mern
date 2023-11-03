@@ -2,11 +2,15 @@ import React, {useState} from 'react';
 
 import './authorization.scss';
 import Input from "../../utils/Input";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import {loginUser} from "../../redux-toolkit/features/userSlice";
 
 const Login = () => {
 
+    const navigate = useNavigate();
+    const isAuth = useSelector(state => state.user.isAuth)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
@@ -14,6 +18,10 @@ const Login = () => {
     const handleLogin = () => {
         try {
             dispatch(loginUser({email, password}));
+            //if (isAuth) {
+                navigate("/");
+           // }
+
         } catch (e) {console.log('Error', e)}
     };
 

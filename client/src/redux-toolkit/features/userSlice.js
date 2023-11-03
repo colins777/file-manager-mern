@@ -88,12 +88,12 @@ export const userSlice = createSlice ({
             console.log('action rejected', action);
         },
 
-        [auth.fulfilled] : (state) => {
-            console.log('auth fulfilled', state);
+        [auth.fulfilled] : (state, action) => {
+            console.log('auth fulfilled', action);
             state.isAuth = true;
         },
-        [auth.rejected] : (state) => {
-            console.log('auth rejected', state);
+        [auth.rejected] : (state, action) => {
+            console.log('auth rejected', action);
             state.isAuth = false;
         },
     }
