@@ -23,6 +23,8 @@ const Drive = () => {
     const fileModalStatus = useSelector(state => state.file.modalDisplay);
     const foldersStack = useSelector(state => state.file.dirStack);
 
+    const loaderStatus = useSelector(state => state.helpers.loader);
+
     const [prevFolderId, setPrevFolderId] = useState(null);
     const [dragEnter, setDragEnter] = useState(false);
     const [sort, setSort] = useState('name');
@@ -135,6 +137,20 @@ const Drive = () => {
 
     return ( !dragEnter ?
         <div className="grey-bg app-container container-fluid d-flex align-items-stretch justify-content-between p-4">
+
+            {/*Preloader*/}
+            {loaderStatus && <div className="lds-roller">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+            }
+
             <div className="list-wrapper"
                  onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}
             >

@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {addFilesToProgress, changeProgressUploadFile} from './uploadWindowSlice';
+import {setLoader} from './helpersSlice';
 
 const initialState = {
     files: [],
@@ -13,8 +14,11 @@ const initialState = {
 //action getFiles
 export const getFiles = createAsyncThunk(
     'file/getFiles',
-    async ({currentDirId, userId, sort}) => {
+    async ({currentDirId, userId, sort}, {dispatch}) => {
         try {
+
+            //show loader
+            dispatch(setLoader(true));
 
             let url = `http://localhost:5000/api/files?user=${userId}`;
 
@@ -28,12 +32,8 @@ export const getFiles = createAsyncThunk(
 
             console.log('URL', url);
 
-
-//            const {data} = await axios.get(`http://localhost:5000/api/files?user=${userId}&${currentDirId ? 'parent=' + currentDirId : ''}`,{
-
+            //const {data} = await axios.get(`http://localhost:5000/api/files?user=${userId}&${currentDirId ? 'parent=' + currentDirId : ''}`,{
             const {data} = await axios.get(url,{
-
-
                 //  const {data} = await axios.get(`http://localhost:5000/api/files?${dirID ? 'parent=' + dirID : ''}`,{
                 //check user using token from localstorage
                 headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
@@ -41,6 +41,8 @@ export const getFiles = createAsyncThunk(
 
             //if response contain files
             if (data) {
+                //hide preloader
+                dispatch(setLoader(false));
                 console.log('getFiles response', data);
             } else {
                 console.log('No files');
@@ -50,6 +52,8 @@ export const getFiles = createAsyncThunk(
             return data;
         } catch (e) {
             alert(e.response.data.message);
+        } finally {
+            dispatch(setLoader(false));
         }
     }
 );
