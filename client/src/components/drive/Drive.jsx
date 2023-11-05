@@ -35,6 +35,8 @@ const Drive = () => {
 
     //const folderName = '5_dir';
     //dirId: '6532763a6b9f63cebd451ba9'
+    //@TODO fix bug with back btn if no user Id Back not works
+    const userId = '652fe669110ed35eea8097b3';
 
     const createFolderHandler = () => {
 
@@ -58,8 +60,8 @@ const Drive = () => {
        // if (!lastFolder) {
         if (foldersStack.length < 2) {
             setPrevFolderId(null);
-          //  dispatch(getFiles({ userId: userId }));
-            dispatch(getFiles());
+            dispatch(getFiles({ userId: userId }));
+           // dispatch(getFiles());
         } else {
             setPrevFolderId(foldersStack[foldersStack.length - 2]);
         }
