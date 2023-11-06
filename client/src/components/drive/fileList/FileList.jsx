@@ -13,6 +13,14 @@ const FileList = () => {
         {_id: 2, name: 'test2', type: 'dir2', size: '6Gb', date: '19/10/2023'}
     ].map(file => <File file={file} key={file.id}/>);*/
 
+   if (files.length === 0) {
+       return (
+           <div className="file-list">
+               No files.
+           </div>
+       )
+   }
+
     return (
         <div className="file-list">
             <div className="row header">
