@@ -183,6 +183,29 @@ class FileController {
         }
     }
 
+    async searchFile(req, res) {
+        try {
+
+            const searchName = req.query.search;
+            //get all user files
+            let files = await File.find({user: req.user.id});
+
+            //search by name
+            files = files.filter((file) => file.name.includes(searchName));
+
+            //search in all user files
+            if (!files) {
+                return res.status(400).json({message: 'files not found'})
+            }
+
+            console.log('file search: ', files);
+            return res.json(files);
+
+        } catch (e) {
+            console.log(e)
+            return res.status(400).json({message: 'Search files error: ' + e})
+        }
+    }
 
 }
 

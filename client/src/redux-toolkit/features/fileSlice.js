@@ -187,6 +187,25 @@ export const deleteFile = createAsyncThunk(
     }
 );
 
+//action deleteFile
+export const searchFile = createAsyncThunk(
+    'file/searchFile',
+    async ({name}) => {
+        try {
+
+            console.log('file name: ', name);
+
+            const {data} = await axios.get(`http://localhost:5000/api/files/search?search=${name}`,{
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+            });
+
+            return data;
+        } catch (e) {
+            alert(e.response.data.message);
+        }
+    }
+);
+
 
 
 export const fileSlice = createSlice ({
@@ -271,6 +290,17 @@ export const fileSlice = createSlice ({
 
         [deleteFile.rejected] : (state, action) => {
             console.log('deleteFile action rejected: ', action.error.message);
+        },
+
+        //async action searchFile
+        [searchFile.fulfilled]: (state, action) => {
+            state.files = action.payload;
+            console.log('searchFile fulfilled action', action.payload);
+
+        },
+
+        [searchFile.rejected] : (state, action) => {
+            console.log('searchFile action rejected: ', action.error.message);
         },
 
     }

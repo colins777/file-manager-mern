@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     getFiles,
     removeFolderFromStack,
+    searchFile,
     showHideFileModal,
     uploadFile
 } from "../../redux-toolkit/features/fileSlice";
@@ -28,6 +29,29 @@ const Drive = () => {
     const [prevFolderId, setPrevFolderId] = useState(null);
     const [dragEnter, setDragEnter] = useState(false);
     const [sort, setSort] = useState('name');
+
+    //Search field
+    const [searchRequest, setSearchRequest] = useState('');
+    const [searchTimeout, setSearchTimeout] = useState(false);
+
+    function changeSearchHandler(e) {
+
+        const searchInputVal = e.target.value;
+        //console.log('searchInputVal', searchInputVal);
+        setSearchRequest(searchInputVal);
+
+        if (searchTimeout !== false) {
+            clearTimeout(searchTimeout)
+        }
+
+        if (searchInputVal !=='') {
+            setSearchTimeout(setTimeout(() => {
+                dispatch(searchFile({name: searchInputVal}));
+            }, 500, searchInputVal))
+        } else {
+            dispatch(getFiles({currentDirId, sort}))
+        }
+    }
 
     //if change currentDir will be activated dispatch()
     useEffect(() => {
@@ -155,9 +179,11 @@ const Drive = () => {
                  onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}
             >
                 <div className="tools-line">
-                    <input type="text" data-kt-filemanager-table-filter="search"
+                    <input type="text"
+                            onChange={(e) => changeSearchHandler(e)}
                            className="form-control form-control-solid w-250px ps-15"
                            placeholder="Search Files &amp; Folders"
+                           value={searchRequest}
                     />
 
                     <select value={sort}
