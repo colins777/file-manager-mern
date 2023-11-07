@@ -18,7 +18,8 @@ export const loginUser = createAsyncThunk(
                 {email, password})
 
             if (data.token) {
-                localStorage.setItem('token', data.token)
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user_id', data.id);
             }
 
             console.log('loginUser Data', data);
@@ -41,6 +42,7 @@ export const auth = createAsyncThunk(
 
             if (data.token) {
                 localStorage.setItem('token', data.token)
+                localStorage.setItem('user_id', data.id);
             }
 
             console.log('loginUser Data', data);
@@ -48,6 +50,7 @@ export const auth = createAsyncThunk(
             return data;
         } catch (e) {
             localStorage.removeItem('token');
+            localStorage.removeItem('user_id');
             alert(e.response.data.message);
         }
     }

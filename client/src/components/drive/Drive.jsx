@@ -1,5 +1,7 @@
-//@TODO redirect after login on files list
-//@TODO
+//@TODO 1 fix auth error, need to get user Id from token, not from localstorage!!!
+//@TODO 2 fix f-ty of back btn - not correct back folder
+//@TODO 3 add breadcrumbs
+
 
 
 import './drive.scss';
@@ -28,7 +30,7 @@ const Drive = () => {
 
     const [prevFolderId, setPrevFolderId] = useState(null);
     const [dragEnter, setDragEnter] = useState(false);
-    const [sort, setSort] = useState('name');
+    const [sort, setSort] = useState('date');
 
     //Search field
     const [searchRequest, setSearchRequest] = useState('');
@@ -44,7 +46,7 @@ const Drive = () => {
             clearTimeout(searchTimeout)
         }
 
-        if (searchInputVal !=='') {
+        if (searchInputVal) {
             setSearchTimeout(setTimeout(() => {
                 dispatch(searchFile({name: searchInputVal}));
             }, 500, searchInputVal))
@@ -57,12 +59,12 @@ const Drive = () => {
     useEffect(() => {
         dispatch(getFiles({currentDirId, sort}))
       //  dispatch(getFiles({currentDirId, userId, sort}))
-    }, [currentDirId, fileUploaded, sort]);
+   // }, [currentDirId, fileUploaded, sort]);
+    }, [fileUploaded, sort]);
 
-    //const folderName = '5_dir';
-    //dirId: '6532763a6b9f63cebd451ba9'
     //@TODO fix bug with back btn if no user Id Back not works
-    const userId = '652fe669110ed35eea8097b3';
+    //const userId = '652fe669110ed35eea8097b3';
+    const userId = localStorage.getItem('user_id') ? localStorage.getItem('user_id') : null;
 
     const createFolderHandler = () => {
 
@@ -83,14 +85,13 @@ const Drive = () => {
         dispatch(removeFolderFromStack({currentDirId: lastFolder}));
         //console.log('foldersStack', foldersStack);
 
-       // if (!lastFolder) {
+       //root folder
         if (foldersStack.length < 2) {
             setPrevFolderId(null);
-            dispatch(getFiles({ userId: userId }));
-           // dispatch(getFiles());
         } else {
             setPrevFolderId(foldersStack[foldersStack.length - 2]);
         }
+        dispatch(getFiles({ userId: userId }));
     };
 
     useEffect(() => {

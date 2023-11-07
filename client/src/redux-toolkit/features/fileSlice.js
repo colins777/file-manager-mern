@@ -21,6 +21,7 @@ export const getFiles = createAsyncThunk(
             dispatch(setLoader(true));
 
             let url = `http://localhost:5000/api/files?user=${userId}`;
+            //let url = `http://localhost:5000/api/files?user=652fe669110ed35eea8097b3`;
 
             if (currentDirId) {
                 url+= `&parent=${currentDirId}`
@@ -213,6 +214,9 @@ export const fileSlice = createSlice ({
     initialState,
     //object that will change the state
     reducers: {
+        clearFolderStack: (state, action) => {
+            state.dirStack = [];
+        },
         showHideFileModal: (state, action) => {
             state.modalDisplay = action.payload
         },
@@ -308,4 +312,4 @@ export const fileSlice = createSlice ({
 
 export default fileSlice.reducer;
 //export not async action
-export const {showHideFileModal, setCurrentDir, addFolderToStack, removeFolderFromStack, setFileUploadProgress} = fileSlice.actions;
+export const {showHideFileModal, setCurrentDir, addFolderToStack, removeFolderFromStack, clearFolderStack} = fileSlice.actions;
