@@ -8,7 +8,8 @@ import './drive.scss';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getFiles,
+    clearBreadCrumbsStack,
+    getFiles, removeFolderFromBreadcrumbs,
     removeFolderFromStack,
     searchFile,
     showHideFileModal,
@@ -18,6 +19,7 @@ import FileList from "./fileList/FileList";
 import FileModal from "../Modals/FileModal";
 import UploaderWindow from "./uploader/UploaderWindow";
 import {showUploader} from "../../redux-toolkit/features/uploadWindowSlice";
+import Breadcrumbs from "../breadcrumbs/Breadcrumbs";
 
 const Drive = () => {
     const dispatch = useDispatch();
@@ -35,6 +37,9 @@ const Drive = () => {
     //Search field
     const [searchRequest, setSearchRequest] = useState('');
     const [searchTimeout, setSearchTimeout] = useState(false);
+
+    //Breadcrumbs
+    const breadCrumbsStack = useSelector(state => state.file.breadCrumbsStack);
 
     function changeSearchHandler(e) {
 
@@ -85,9 +90,14 @@ const Drive = () => {
         dispatch(removeFolderFromStack({currentDirId: lastFolder}));
         //console.log('foldersStack', foldersStack);
 
+        dispatch(removeFolderFromBreadcrumbs());
+        console.log('breadCrumbsStack', breadCrumbsStack);
+
+
        //root folder
         if (foldersStack.length < 2) {
-            setPrevFolderId(null);
+            setPrevFolderId(null)
+            dispatch(clearBreadCrumbsStack());
         } else {
             setPrevFolderId(foldersStack[foldersStack.length - 2]);
         }
@@ -256,6 +266,8 @@ const Drive = () => {
                         : ''
                     }
                 </div>
+
+               <Breadcrumbs breadcrumbs={breadCrumbsStack} />
 
                 <FileList/>
 

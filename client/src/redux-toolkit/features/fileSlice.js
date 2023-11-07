@@ -8,6 +8,7 @@ const initialState = {
     currentDir: null,
     modalDisplay: false,
     dirStack: [],
+    breadCrumbsStack: [],
     fileUploaded: false,
 };
 
@@ -231,6 +232,18 @@ export const fileSlice = createSlice ({
             // console.log('addFolderToStack', action)
             state.dirStack = state.dirStack.filter((dirID) => dirID !== action.payload.currentDirId);
         },
+        addFolderToBreadcrumbs:
+            (state, action) => {
+                state.breadCrumbsStack.push(action.payload);
+            },
+        removeFolderFromBreadcrumbs:
+            (state, action) => {
+                //remove last element after clicking Back btn
+                state.breadCrumbsStack =  [[...state.breadCrumbsStack].pop()];
+            },
+        clearBreadCrumbsStack: (state, action) => {
+            state.breadCrumbsStack = [];
+        },
 
     },
     //for async
@@ -312,4 +325,13 @@ export const fileSlice = createSlice ({
 
 export default fileSlice.reducer;
 //export not async action
-export const {showHideFileModal, setCurrentDir, addFolderToStack, removeFolderFromStack, clearFolderStack} = fileSlice.actions;
+export const {
+    showHideFileModal,
+    setCurrentDir,
+    addFolderToStack,
+    removeFolderFromStack,
+    clearFolderStack,
+    addFolderToBreadcrumbs,
+    removeFolderFromBreadcrumbs,
+    clearBreadCrumbsStack
+} = fileSlice.actions;

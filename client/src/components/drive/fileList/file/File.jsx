@@ -1,7 +1,14 @@
 import React from 'react';
 import './file.scss'
 import {useDispatch} from "react-redux";
-import {addFolderToStack, getFiles, setCurrentDir, downloadFile, deleteFile} from "../../../../redux-toolkit/features/fileSlice";
+import {
+    addFolderToStack,
+    getFiles,
+    setCurrentDir,
+    downloadFile,
+    deleteFile,
+    addFolderToBreadcrumbs
+} from "../../../../redux-toolkit/features/fileSlice";
 import sizeFormat from "../../../../helpers/sizeFormat";
 
 const ImgTable = () => ( <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
@@ -25,6 +32,8 @@ const File = ({file}) => {
         if (file.type === 'dir') {
             dispatch (addFolderToStack({currentDirId: file._id}));
             dispatch(setCurrentDir({currentDirId: file._id}));
+            //Breadcrumbs
+            dispatch(addFolderToBreadcrumbs({folderId: file._id, folderName: file.name}));
             dispatch(getFiles({currentDirId: file._id, userId: file.user}));
         }
 
