@@ -1,6 +1,6 @@
 import React from 'react';
 import './file.scss'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     addFolderToStack,
     getFiles,
@@ -23,8 +23,9 @@ const FileIcon = () => (
     </svg>
 );
 
-const File = ({file}) => {
+const File = ({file, folderView}) => {
     const dispatch = useDispatch();
+   // const folderView = useSelector(state => state.files.view)
 
     //console.log('file!!!!!!!!', file);
     const openFolderHandler = function () {
@@ -49,45 +50,92 @@ const File = ({file}) => {
         dispatch(deleteFile(file))
     }
 
-    return (
-        <div className="file" onClick={() => openFolderHandler(file)}>
-            <div className="file-image">
-                {
-                    file.type === 'dir'
-                        ?
-                        <ImgTable/>
-                        :
-                        <FileIcon/>
-                }
+    if (folderView === 'list') {
+        return (
+            <div className="file" onClick={() => openFolderHandler(file)}>
+                <div className="file-image">
+                    {
+                        file.type === 'dir'
+                            ?
+                            <ImgTable/>
+                            :
+                            <FileIcon/>
+                    }
 
-            </div>
-            <div className="file-name">
-                <span className="text">{file.name}</span>
-            </div>
+                </div>
 
-            <div className="file-date">
-                <span className="text">{file.date ? file.date.slice(0, 10) : file.date}</span>
-            </div>
+                <div className="file-name">
+                    <span className="text">{file.name}</span>
+                </div>
 
-            <div className="file-size">
-                <span className="text">{sizeFormat(file.size)}</span>
-            </div>
+                <div className="file-date">
+                    <span className="text">{file.date ? file.date.slice(0, 10) : file.date}</span>
+                </div>
 
-            <div className="file-download-btn ">
-                {file.type !== 'dir' && <button className="badge badge-lg badge-primary"
-                onClick={e => downloadClickHandler(e)}
-                >
-                    Download
-                </button>}
-            </div>
+                <div className="file-size">
+                    <span className="text">{sizeFormat(file.size)}</span>
+                </div>
 
-            <div className="file-delete-btn ">
-                <div className="download-btn badge badge-lg badge-primary"
-                onClick={() => deleteFileHandler()}
-                >Delete</div>
+                <div className="file-download-btn ">
+                    {file.type !== 'dir' && <button className="badge badge-lg badge-primary"
+                                                    onClick={e => downloadClickHandler(e)}
+                    >
+                        Download
+                    </button>}
+                </div>
+
+                <div className="file-delete-btn ">
+                    <div className="download-btn badge badge-lg badge-primary"
+                         onClick={() => deleteFileHandler()}
+                    >Delete</div>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
+
+    if (folderView === 'box') {
+        return (
+            <div className="file file-box" onClick={() => openFolderHandler(file)}>
+                <div className="file-image">
+                    {
+                        file.type === 'dir'
+                            ?
+                            <ImgTable/>
+                            :
+                            <FileIcon/>
+                    }
+
+                </div>
+                <div className="file-name">
+                    <span className="text">{file.name}</span>
+                </div>
+
+                <div className="file-date">
+                    <span className="text">{file.date ? file.date.slice(0, 10) : file.date}</span>
+                </div>
+
+                <div className="file-size">
+                    <span className="text">{sizeFormat(file.size)}</span>
+                </div>
+
+                <div className="file-download-btn ">
+                    {file.type !== 'dir' && <button className="badge badge-lg badge-primary"
+                                                    onClick={e => downloadClickHandler(e)}
+                    >
+                        Download
+                    </button>}
+                </div>
+
+                <div className="file-delete-btn ">
+                    <div className="download-btn badge badge-lg badge-primary"
+                         onClick={() => deleteFileHandler()}
+                    >Delete</div>
+                </div>
+            </div>
+        );
+    }
+
+
 };
 
 export default File;

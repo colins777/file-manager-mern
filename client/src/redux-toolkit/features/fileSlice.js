@@ -10,6 +10,7 @@ const initialState = {
     dirStack: [],
     breadCrumbsStack: [],
     fileUploaded: false,
+    view: 'list'
 };
 
 //action getFiles
@@ -244,6 +245,9 @@ export const fileSlice = createSlice ({
         clearBreadCrumbsStack: (state, action) => {
             state.breadCrumbsStack = [];
         },
+        setFoldersView: (state, action) => {
+            state.view = action.payload;
+        },
 
     },
     //for async
@@ -333,5 +337,6 @@ export const {
     clearFolderStack,
     addFolderToBreadcrumbs,
     removeFolderFromBreadcrumbs,
-    clearBreadCrumbsStack
+    clearBreadCrumbsStack,
+    setFoldersView
 } = fileSlice.actions;

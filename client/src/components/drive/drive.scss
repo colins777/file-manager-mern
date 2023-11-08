@@ -10,7 +10,9 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-
+    &:nth-child(2) {
+      margin-top: 10px;
+    }
     & > * {
       &:not(:last-child) {
         margin-right: 20px;
@@ -122,5 +124,28 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.view-buttons {
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-start;
+  &__list {
+    cursor: pointer;
+    margin-right: 10px;
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: #000000;
+    }
+  }
+  &__plates {
+    cursor: pointer;
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: #000000;
+    }
   }
 }
